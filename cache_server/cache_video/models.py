@@ -19,4 +19,5 @@ class LocalUrl(models.Model):
     url = models.CharField(max_length=100)                                   # 실제 다운로드 하고자 하는 url
     local = models.CharField(max_length=100)                                 # 다운하고자 하는 파일의 local 위치
     thumbnail = models.CharField(max_length=100)                             # 썸네일 파일의 local 위치
+    upload_date = models.DateTimeField()
 
