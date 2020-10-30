@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cache_video.apps.CacheVideoConfig' # DB 사용을 위해 추가
 ]
 
 MIDDLEWARE = [
