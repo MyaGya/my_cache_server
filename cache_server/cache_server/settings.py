@@ -1,7 +1,7 @@
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 SECRET_KEY = 'b!9)l8seqh(%wm*z@pturp!4p$$j!wy09f!5g4ejt2wy(-kf!j'
 
@@ -9,8 +9,6 @@ SECRET_KEY = 'b!9)l8seqh(%wm*z@pturp!4p$$j!wy09f!5g4ejt2wy(-kf!j'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cache_video.apps.CacheVideoConfig',  # 메인 페이지
-    'common.apps.CommonConfig',           # 회원가입 관련 페이지
+    'common.apps.CommonConfig',  # 회원가입 관련 페이지
 ]
 
 MIDDLEWARE = [
@@ -53,7 +51,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cache_server.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -63,7 +60,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -83,7 +79,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -97,11 +92,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 사용자가 업로드한 파일 관리
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',

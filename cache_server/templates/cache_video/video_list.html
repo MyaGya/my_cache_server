@@ -3,15 +3,24 @@
 
 {% load static %}
 {% if user.is_authenticated %}                              <!-- 로그인시 출력 -->
+{% for _ in "1234" %}
+<div class="d-flex justify-content-center">
+
 <div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="..." alt="Card image cap">
+  <img src="media/sample.jpg" class="card-img-top" alt="media/sample.jpg">
   <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <h5 class="card-title">제목</h5>
+    <a href="#" class="btn btn-primary">이동</a>
+    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
   </div>
 </div>
+</div>
+{% endfor %}
 {% else %}                                                  <!-- 로그아웃시 출력 -->
+
+<video width="530" height="440" controls autoplay>
+  <source src="media/sample_video.mp4" type="video/mp4"> </source>
+
 
 {% endif %}
 
