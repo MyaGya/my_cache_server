@@ -6,7 +6,7 @@
 {% for _ in "1234" %}
 <div class="d-flex justify-content-center">
 
-<div class="card" style="width: 18rem;">
+<div class="card m-2" style="width: 18rem;">
   <img src="media/sample.jpg" class="card-img-top" alt="media/sample.jpg">
   <div class="card-body">
     <h5 class="card-title">제목</h5>
@@ -14,13 +14,14 @@
     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
   </div>
 </div>
-</div>
+</div m-5>
 {% endfor %}
 {% else %}                                                  <!-- 로그아웃시 출력 -->
 
+<div class="d-flex justify-content-center">
 <video width="530" height="440" controls autoplay>
   <source src="media/sample_video.mp4" type="video/mp4"> </source>
-
+</div>
 
 {% endif %}
 
