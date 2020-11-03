@@ -11,7 +11,7 @@ YouTube와 같은 동영상 사이트는 캐시 서버를 두고 사용하는 �
 
 다음과 같은 기본 구조를 가집니다
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fcc6e4a5-d5d6-42b1-b5ae-2173996e2730/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fcc6e4a5-d5d6-42b1-b5ae-2173996e2730/Untitled.png)
+
 
 프로젝트 구조도
 
