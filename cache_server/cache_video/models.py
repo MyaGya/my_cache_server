@@ -1,7 +1,5 @@
 from django.db import models
 
-# DB를 계산함에 있어서 id는 자동으로 추가된다.
-
 
 class User(models.Model):
     email = models.CharField(max_length=30)     # 이메일
