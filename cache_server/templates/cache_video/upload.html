@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+<h5 class="my-3 border-bottom pb-2">동영상 업로드</h5>
+<form>
+    <div class="mx-auto" style="width: 400px;">
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFile" >
+            <label class="custom-file-label" for="customFile" >파일을 업로드해 주세요</label>
+        </div>
+    </div>
+</form>
+
+
+{% endblock %}
