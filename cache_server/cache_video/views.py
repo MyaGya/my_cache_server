@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.shortcuts import get_object_or_404, redirect
+from django.utils import timezone
+from .forms import UploadForm
 
 def main(request):
     '''
@@ -10,19 +12,28 @@ def main(request):
     page = request.GET.get('page', '1')  # 페이지
 
     # 조회
-    #question_list = Question.objects.order_by('-create_date')
+    # question_list = Question.objects.order_by('-create_date')
 
     # 페이징처리
-    #paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
-    #page_obj = paginator.get_page(page)
+    # paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
+    # page_obj = paginator.get_page(page)
 
-    #context = {'question_list': page_obj}
+    # context = {'question_list': page_obj}
     return render(request, 'cache_video/video_list.html')
+
 
 def upload(request):
     '''
-    페이지 출력
+    동영상 업로드
     '''
-    # 입력 파라미터
-    page = request.GET.get('page', '1')  # 페이지
-    return render(request, 'cache_video/upload.html')
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES)
+        #if form.is_valid():
+        upload = form.save(commit=False)
+        upload.uploaded_date = timezone.now()
+        return redirect('cache_video:main')
+    else:
+        form = UploadForm()
+    context = {'form': form}
+    return render(request, 'cache_video/upload.html', context)
+

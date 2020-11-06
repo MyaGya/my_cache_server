@@ -19,3 +19,10 @@ class LocalUrl(models.Model):
     thumbnail = models.CharField(max_length=100)                             # 썸네일 파일의 local 위치
     upload_date = models.DateTimeField()
 
+
+class UploadedFile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)    # 파일을 올린 유저
+    subject = models.CharField(max_length=100)                  # 제목
+    upload_date = models.DateTimeField()                        # 업로드된 시간
+    local = models.FileField(upload_to='media/')                # 다운하고자 하는 파일의 local 위치
+
