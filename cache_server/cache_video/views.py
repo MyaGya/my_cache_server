@@ -28,10 +28,9 @@ def upload(request):
     '''
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
-        #if form.is_valid():
-        upload = form.save(commit=False)
-        upload.uploaded_date = timezone.now()
-        return redirect('cache_video:main')
+        if form.is_valid():
+            form.save()
+            return redirect('cache_video:main')
     else:
         form = UploadForm()
     context = {'form': form}
