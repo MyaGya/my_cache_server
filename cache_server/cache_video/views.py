@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from .forms import UploadForm
-
+from .models import UploadedFile, User
 def main(request):
     '''
     동영상 출력 페이지
@@ -29,10 +29,16 @@ def upload(request):
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('cache_video:main')
+            my_form = form.save(commit=False)
+            my_form.uploaded_date = timezone.now()
+            my_form.user = get_object_or_404(User, pk=request.user.id)
+            my_form.save()
+            return redirect('cache_video:')
     else:
         form = UploadForm()
     context = {'form': form}
     return render(request, 'cache_video/upload.html', context)
 
+def my_video(request):
+    documents = UploadedFile.objects.all()
+    return render(request, 'cache_video/my_video.html', {'documents': documents})
