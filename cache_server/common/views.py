@@ -16,7 +16,7 @@ def signup(request):
             email = form.cleaned_data.get('email')
             user = authenticate(username=username, password=raw_password, email=email)
             login(request, user)
-            return redirect('main')
+            return redirect('cache_video:main')
     else:
         form = UserForm()
     return render(request, 'common/signup.html', {'form': form})

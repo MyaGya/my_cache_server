@@ -34,8 +34,7 @@ def upload(request):
             my_form.upload_time = timezone.now()
             my_form.user = request.user
             my_form.save()
-
-            return redirect('cache_video:')
+            return redirect('cache_video:main')
     else:
         form = UploadForm()
     context = {'form': form}
