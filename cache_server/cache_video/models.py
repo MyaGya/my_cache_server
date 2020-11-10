@@ -1,10 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-
-class User(models.Model):
-    email = models.CharField(max_length=30)     # 이메일
-    password = models.CharField(max_length=20)  # 패스워드
-    name = models.CharField(max_length=20)      # 이름
+#class User(models.Model):
+#    email = models.CharField(max_length=30)     # 이메일
+#    password = models.CharField(max_length=20)  # 패스워드
+#    name = models.CharField(max_length=20)      # 이름
 
 
 class TrackingUrl(models.Model):
@@ -23,6 +23,6 @@ class LocalUrl(models.Model):
 class UploadedFile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)    # 파일을 올린 유저
     subject = models.CharField(max_length=100)                  # 제목
-    #uploaded_date = models.DateTimeField(auto_now_add=True)     # 업로드된 시간
+    upload_time = models.DateTimeField()                        # 업로드된 시간
     local = models.FileField(upload_to='media/')                # 다운하고자 하는 파일의 local 위치
 
