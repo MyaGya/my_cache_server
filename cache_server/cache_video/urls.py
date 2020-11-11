@@ -3,7 +3,7 @@ from . import views
 
 app_name = 'cache_video'
 urlpatterns = [
-    path('', views.main, name='main'),                                                     # 메인 페이지
+    path('', views.go_main, name='go_main'),                                                     # 메인 페이지
     path('main/', views.main, name='main'),                                                     # 메인 페이지
     path('upload/', views.upload, name='upload'),                                           # 업로드 페이지
     path('my_video/', views.my_video, name='my_video')                                           # 내 비디오
