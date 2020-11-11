@@ -5,6 +5,8 @@ from django.utils import timezone
 from .forms import UploadForm
 from .models import UploadedFile
 from django.contrib.auth.models import User
+import os, time
+from cache_server import settings# 삭제에 사용
 
 
 def go_main(request):
@@ -50,5 +52,20 @@ def upload(request):
 
 
 def my_video(request):
-    # documents = UploadedFile.objects.all()
     return render(request, 'cache_video/my_video.html', {'user': request.user})
+
+
+def vide_delete(request, uploadedfile_id):
+    time.sleep(1)
+
+
+
+def video_delete2(request, uploadedfile_id):
+    '''
+    등록된 비디오를 삭제합니다.
+    '''
+    time.sleep(1)
+    data = get_object_or_404(UploadedFile, pk=uploadedfile_id)
+    os.remove(os.path.join(settings.MEDIA_ROOT, str(data.local)))
+    data.delete()
+    return redirect('cache_video:my_video')

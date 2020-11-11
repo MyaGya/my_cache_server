@@ -23,6 +23,13 @@
                     {{ video.upload_time }}
                 </div>
             </div>
+                    <!-- -------------------------------------- [edit] -------------------------------------- -->
+        <div class="my-3">
+                <a href="#" class="delete btn btn-sm btn-outline-secondary"
+                data-uri="{% url 'cache_video:video_delete' video.id  %}">삭제</a>
+        </div>
+        <!-- ------------------------------------------------------------------------------------ -->
+
         </div>
     </div>
     {% endfor %}
