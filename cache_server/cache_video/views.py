@@ -5,6 +5,14 @@ from django.utils import timezone
 from .forms import UploadForm
 from .models import UploadedFile
 from django.contrib.auth.models import User
+
+
+def go_main(request):
+    '''
+    시작페이지를 main으로 보내기 위한 기본 기능
+    '''
+    return redirect('cache_video:main')
+
 def main(request):
     '''
     동영상 출력 페이지
@@ -40,6 +48,7 @@ def upload(request):
     context = {'form': form}
     return render(request, 'cache_video/upload.html', context)
 
+
 def my_video(request):
-    documents = UploadedFile.objects.all()
-    return render(request, 'cache_video/my_video.html', {'documents': documents})
+    # documents = UploadedFile.objects.all()
+    return render(request, 'cache_video/my_video.html', {'user': request.user})
