@@ -55,17 +55,12 @@ def my_video(request):
     return render(request, 'cache_video/my_video.html', {'user': request.user})
 
 
-def vide_delete(request, uploadedfile_id):
-    time.sleep(1)
-
-
-
-def video_delete2(request, uploadedfile_id):
+def video_delete(request, uploadedfile_id):
     '''
     등록된 비디오를 삭제합니다.
     '''
-    time.sleep(1)
     data = get_object_or_404(UploadedFile, pk=uploadedfile_id)
-    os.remove(os.path.join(settings.MEDIA_ROOT, str(data.local)))
     data.delete()
+
+    # os.remove(os.path.join(settings.MEDIA_ROOT, str(data.local)))
     return redirect('cache_video:my_video')
