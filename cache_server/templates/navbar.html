@@ -16,13 +16,14 @@
 
             </li>
             <li class="'nav-item ">
-                {% if user.is_authenticated %} <!-- 로그인 되어있을 경우 -->
+                {% if user.is_authenticated %}
                 <a class="nav-link" href="{% url 'cache_video:upload' %}">업로드</a>
-                {% endif %}
             </li>
             <li class="'nav-item ">
-                {% if user.is_authenticated %} <!-- 로그인 되어있을 경우 -->
                 <a class="nav-link" href="{% url 'cache_video:my_video' %}">내 비디오 확인</a>
+            </li>
+            <li class="'nav-item ">
+                <a class="nav-link" href="{% url 'cache_video:register_url' %}">구독 페이지 등록</a>
                 {% endif %}
             </li>
         </ul>

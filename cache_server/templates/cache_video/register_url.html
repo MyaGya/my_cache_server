@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<div class="container my-3">
+    <h2 class="border-bottom py-2">{{ user }}</h2>
+    <h5 class="border-bottom my-3 py-2">{{user.trackingurl_set.count}}개의 URL이 있습니다.</h5>
+      <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+  </form>
+    {% for url in user.trackingurl_set.all %}
+    <div class="card my-3">
+        <div class="card-body">
+            <h2 class="border-bottom py-2">{{ url.url }}</h2>
+                    <a href="#" class="delete btn btn-sm btn-outline-secondary"
+                    data-uri="{% url 'cache_video:url_delete' url.id  %}">삭제</a>
+            <div class="card-text" style="white-space: pre-line;">
+            </div>
+        <div class="my-3">
+        </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

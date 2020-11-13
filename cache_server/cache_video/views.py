@@ -2,11 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
-from .forms import UploadForm
-from .models import UploadedFile
+from .forms import UploadForm, RegisterUrlForm
+from .models import UploadedFile, TrackingUrl
 from django.contrib.auth.models import User
 import os, time
-from cache_server import settings# 삭제에 사용
 
 
 def go_main(request):
@@ -14,6 +13,7 @@ def go_main(request):
     시작페이지를 main으로 보내기 위한 기본 기능
     '''
     return redirect('cache_video:main')
+
 
 def main(request):
     '''
@@ -64,3 +64,29 @@ def video_delete(request, uploadedfile_id):
 
     # os.remove(os.path.join(settings.MEDIA_ROOT, str(data.local)))
     return redirect('cache_video:my_video')
+
+
+def url_delete(request, urltracking_id):
+    '''
+    등록된 url을 삭제합니다.
+    '''
+    data = get_object_or_404(TrackingUrl, pk=urltracking_id)
+    data.delete()
+
+    return redirect('cache_video:register_url')
+
+def register_url(request):
+    '''
+    트래킹 URL을 등록합니다.
+    '''
+    if request.method == 'POST':
+        form = RegisterUrlForm(request.POST)
+        if form.is_valid():
+            my_form = form.save(commit=False)
+            my_form.user = request.user
+            my_form.save()
+            return redirect('cache_video:register_url')
+    else:
+        form = RegisterUrlForm()
+    context = {'form': form, 'user': request.user}
+    return render(request, 'cache_video/register_url.html', context)
