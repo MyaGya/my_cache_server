@@ -17,13 +17,14 @@ class TrackingUrl(models.Model):
 
 class LocalUrl(models.Model):
     '''
-    해당 유투브 채널의
+    해당 유투브 채널이 가지고 있는 동영상 정보
     '''
     tracking_url = models.ForeignKey(TrackingUrl, on_delete=models.CASCADE)  # 지정되어있는 트래킹 url
     subject = models.CharField(max_length=100)                               # 제목
-    local = models.CharField(max_length=100)                                 # 다운하고자 하는 파일의 local 위치
+    url = models.CharField(max_length=100)                                   # 다운하고자 하는 파일의 웹 위치
+    local = models.CharField(max_length=100, blank=True)                     # 다운하고자 하는 파일의 local 위치
     thumbnail = models.CharField(max_length=100, blank=True)                 # 썸네일 파일의 local 위치
-    upload_date = models.DateTimeField()                                     # 업로드 시간
+    # upload_date = models.DateTimeField()                                     # 업로드 시간
     running_time = models.DateTimeField(max_length=100)                      # 동영상 길이
 
 
