@@ -1,37 +1,87 @@
 from selenium import webdriver
-from bs4 import BeautifulSoup as bs
-import pandas as pd
 from selenium.webdriver.common.keys import Keys
-import time
+from bs4 import BeautifulSoup
+import pandas as pd
 
-keyword = '오마이걸'
-url = 'https://www.youtube.com/results?search_query={}'.format(keyword)
 
 driver = webdriver.Chrome('./chromedriver.exe')
+url = 'https://www.youtube.com/channel/UCyn-K7rZLXjGl7VXGweIlcA/videos'
 driver.get(url)
-soup = bs(driver.page_source, 'html.parser')
-driver.close()
+'''
+스크롤 기능 미사용
+import time
+SCROLL_PAUSE_TIME = 0.5
+# 한번 스크롤 하고 멈출 시간 설정
 
-name = soup.select('a#video-title')
-video_url = soup.select('a#video-title')
-view = soup.select('a#video-title')
+body = driver.find_element_by_tag_name('body')
+# body태그를 선택하여 body에 넣음
 
-name_list = []
+while True:
+    last_height = driver.execute_script('return document.documentElement.scrollHeight')
+    # 현재 화면의 길이를 리턴 받아 last_height에 넣음
+    for i in range(10):
+        body.send_keys(Keys.END)
+        # body 본문에 END키를 입력(스크롤내림)
+        time.sleep(SCROLL_PAUSE_TIME)
+    new_height = driver.execute_script('return document.documentElement.scrollHeight')
+    if new_height == last_height:
+        break;
+'''
+
+page = driver.page_source
+soup = BeautifulSoup(page, 'lxml')
+# 제목 조회
+all_videos = soup.find_all(id='dismissable')
+
+title_list = []
+for video in all_videos:
+    title = video.find(id='video-title')
+    print(type(title))
+    if len(title.text.strip())>0:
+        title_list.append(title.text)
+    # 공백을 제거하고 글자수가 0보다 크면 append
+
+# 재생 시간 조회
+video_time_list = []
+for video in all_videos:
+    video_time = video.find('span',{'class' : 'style-scope ytd-thumbnail-overlay-time-status-renderer'})
+    video_time_list.append(video_time.text.strip())
+
+
+# 링크 조회
 url_list = []
-view_list = []
+for video in all_videos:
+    url = video.find(id='thumbnail')['href']
+    url_list.append(url)
 
-for i in range(len(name)):
-    name_list.append(name[i].text.strip())
-    view_list.append(view[i].get('aria-label').split()[-1])
-for i in video_url:
-    url_list.append('{}{}'.format('https://www.youtube.com', i.get('href')))
+# 썸네일
+thumbnail_list = []
+for video in all_videos:
+    thumbnail = video.find(id='img')
+    if 'src' in thumbnail.attrs:
+        thumbnail_list.append(thumbnail)
+    else:
+        thumbnail_list.append('')
+'''
+재생 시간 데이터 클렌징(미사용)
+def stime(text):
+    time = text.split(':')
+    if len(time) == 1:
+        return int(time[0])
+    elif len(time) == 2:
+        return int(time[0])*60 + int(time[1])
+    else:
+        return int(time[0])*3600 + int(time[1]*60 + int(time[2]))
+    
+video_time_seperate_list = []
+for time in video_time_list:
+    video_time_seperate_list.append(stime(time))
 
-youtubeDic = {
-    '제목': name_list,
-    '주소': url_list,
-    '조회수': view_list
-}
+print(video_time_seperate_list)
+'''
 
-youtubeDf = pd.DataFrame(youtubeDic)
+dict_youtube = {'subject':title_list, 'running_time':video_time_list, 'thumbnail':thumbnail_list, 'url':url_list}
 
-youtubeDf.to_csv('오마이걸유튜브.csv', encoding='', index=False
+youtube = pd.DataFrame(dict_youtube)
+youtube.to_csv('오마이걸유튜브.csv', encoding='', index=False)
+driver.close()
