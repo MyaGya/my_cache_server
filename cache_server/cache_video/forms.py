@@ -11,4 +11,4 @@ class UploadForm(forms.ModelForm):
 class RegisterUrlForm(forms.ModelForm):
     class Meta:
         model = TrackingUrl
-        fields = ['url']
+        fields = ['url', 'subject']

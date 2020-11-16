@@ -13,6 +13,7 @@ class TrackingUrl(models.Model):
     '''
     user = models.ForeignKey(User, on_delete=models.CASCADE)    # 등록한 유저
     url = models.CharField(max_length=100)                      # 등록한 url
+    subject = models.CharField(max_length=100)                  # 유저가 붙인 해당 채널의 이름
 
 
 class LocalUrl(models.Model):
@@ -24,7 +25,6 @@ class LocalUrl(models.Model):
     url = models.CharField(max_length=100)                                   # 다운하고자 하는 파일의 웹 위치
     local = models.CharField(max_length=100, blank=True)                     # 다운하고자 하는 파일의 local 위치
     thumbnail = models.CharField(max_length=100, blank=True)                 # 썸네일 파일의 local 위치
-    # upload_date = models.DateTimeField()                                     # 업로드 시간
     running_time = models.DateTimeField(max_length=100)                      # 동영상 길이
 
 

@@ -29,8 +29,8 @@ def find_video(url):
 
 
         # 링크 조회
-        url = video.find(id='thumbnail')['href']
-        url_list.append(url)
+        tmp_url = video.find(id='thumbnail')['href']
+        url_list.append('https://www.youtube.com' + tmp_url)
 
 
         # 썸네일
