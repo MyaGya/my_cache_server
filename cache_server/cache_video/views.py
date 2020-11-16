@@ -5,6 +5,7 @@ from django.utils import timezone
 from .forms import UploadForm, RegisterUrlForm
 from .models import UploadedFile, TrackingUrl
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 import os, time
 
 
@@ -23,14 +24,13 @@ def main(request):
     page = request.GET.get('page', '1')  # 페이지
 
     # 조회
-    # question_list = Question.objects.order_by('-create_date')
-
+    video_list = TrackingUrl.objects.all()
     # 페이징처리
-    # paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
-    # page_obj = paginator.get_page(page)
+    paginator = Paginator(video_list, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
 
-    # context = {'question_list': page_obj}
-    return render(request, 'cache_video/video_list.html')
+    context = {'video_list': page_obj}
+    return render(request, 'cache_video/video_list.html', context)
 
 
 def upload(request):
@@ -53,6 +53,13 @@ def upload(request):
 
 def my_video(request):
     return render(request, 'cache_video/my_video.html', {'user': request.user})
+
+
+def detail(request, tracking_url_id:int):
+    Obj = get_object_or_404(TrackingUrl, pk=tracking_url_id)
+    Obj = Obj.localurl_set.all()
+    print(Obj)
+    return render(request, 'cache_video/detail.html', {'video_list': Obj})
 
 
 def video_delete(request, uploadedfile_id):
