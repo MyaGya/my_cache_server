@@ -39,24 +39,6 @@ def find_video(url):
             thumbnail_list.append(thumbnail)
         else:
             thumbnail_list.append('')
-    '''
-    재생 시간 데이터 클렌징(미사용)
-    def stime(text):
-        time = text.split(':')
-        if len(time) == 1:
-            return int(time[0])
-        elif len(time) == 2:
-            return int(time[0])*60 + int(time[1])
-        else:
-            return int(time[0])*3600 + int(time[1]*60 + int(time[2]))
-        
-    video_time_seperate_list = []
-    for time in video_time_list:
-        video_time_seperate_list.append(stime(time))
-    
-    print(video_time_seperate_list)
-    '''
-
     dict_youtube = {'subject':title_list,'thumbnail':thumbnail_list, 'url':url_list, 'running_time':video_time_list}
 
     youtube = pd.DataFrame(dict_youtube)
