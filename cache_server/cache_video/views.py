@@ -25,6 +25,7 @@ def main(request):
 
     # 조회
     video_list = TrackingUrl.objects.all()
+
     # 페이징처리
     paginator = Paginator(video_list, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)

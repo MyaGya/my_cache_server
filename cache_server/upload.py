@@ -1,17 +1,94 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from bs4 import BeautifulSoup
+import pandas as pd
 from pytube import YouTube
+import os
+import django
+import csv
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cache_server.settings')
+django.setup()
+from cache_video.models import TrackingUrl, LocalUrl, UploadedFile
 
-# YouTube('https://www.youtube.com/watch?v=riI4FGbKN9k').streams.first().download()
-# print(YouTube('https://www.youtube.com/watch?v=riI4FGbKN9k').streams)
-def download_youtube():
-    data = YouTube('https://www.youtube.com/watch?v=riI4FGbKN9k').streams
+def download_video(url, path):
+    '''
+    완성된 URL을 받아(실제 동영상 실행 페이지) 동영상을 path에 1080p으로 다운로드합니다.
+    'https://www.youtube.com/watch?v=riI4FGbKN9k'
+    '''
+    data = YouTube(url).streams
     for s in data:
         if s.resolution == "1080p":
-            s.download()
+            s.download(path)
             return
-    data[0].download()
+    data[0].download(path)
 
 
-#download_youtube()
+def find_video(url, path):
+    '''
+    채널의 url을 입력받아 path위치에 csv 파일을 생성합니다.
+    '''
+    driver = webdriver.Chrome('./chromedriver.exe')
+    base_url = url +'/videos'
+    driver.get(base_url)
+
+    page = driver.page_source
+    soup = BeautifulSoup(page, 'lxml')
+    # 제목 조회
+    all_videos = soup.find_all(id='dismissable')
+
+    title_list = []
+    video_time_list = []
+    url_list = []
+    thumbnail_list = []
+    for video in all_videos[:10]:
+        # 제목
+        title = video.find(id='video-title')
+        if len(title.text.strip())>0:
+            title_list.append(title.text)
+
+        # 재생 시간
+        video_time = video.find('span',{'class' : 'style-scope ytd-thumbnail-overlay-time-status-renderer'})
+        video_time_list.append(video_time.text.strip())
 
 
+        # 링크 조회
+        tmp_url = video.find(id='thumbnail')['href']
+        url_list.append('https://www.youtube.com' + tmp_url)
+
+
+        # 썸네일
+        thumbnail = video.find(id='img')
+        if 'src' in thumbnail.attrs:
+            thumbnail_list.append(thumbnail)
+        else:
+            thumbnail_list.append('')
+    dict_youtube = {'subject':title_list,'thumbnail':thumbnail_list, 'url':url_list, 'running_time':video_time_list}
+
+    youtube = pd.DataFrame(dict_youtube)
+    youtube.to_csv(path + '/' + base_url.split('/')[-2] +'.csv', encoding='', index=False)
+    driver.close()
+
+
+def csv_db_connection(path, url):
+    '''
+    path : 파일 전체 이름이 포함된 path를 기준으로 데이터를 DB와 연동합니다.
+    url : DB의 키값이 되어줄 URL입니다.(채널값)
+    '''
+    f = open('./media/csv/ebsdocumentary.csv', 'r')
+    info = []
+    rdr = csv.reader(f)
+    tracking_url = TrackingUrl.objects.get(url='https://www.youtube.com/channel/UCyn-K7rZLXjGl7VXGweIlcA')
+    for i, row in enumerate(rdr):
+        if i == 0:
+            continue
+        subject, thumbnail, url, running_time = row
+        local = " "
+        db = LocalUrl(tracking_url=tracking_url, subject=subject, thumbnail=thumbnail, local=local, url=url, running_time=running_time)
+        db.save()
+
+
+find_video('https://www.youtube.com/user/ebsdocumentary', './media/csv')
+
+
+# 코드 출처 https://m.blog.naver.com/tamiblue/221723206818
