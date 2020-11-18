@@ -6,10 +6,10 @@ from pytube import YouTube
 import os
 import django
 import csv
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cache_server.settings')
 django.setup()
 from cache_video.models import TrackingUrl, LocalUrl, UploadedFile
+
 
 def download_video(url, path):
     '''
@@ -17,11 +17,14 @@ def download_video(url, path):
     'https://www.youtube.com/watch?v=riI4FGbKN9k'
     '''
     data = YouTube(url).streams
+    '''
+    1080p 기능 임시 비활성화
     for s in data:
         if s.resolution == "1080p":
-            s.download(path)
-            return
-    data[0].download(path)
+            return s.download(path)
+    return data[0].download(path)
+    '''
+    return data.first().download(path)
 
 
 def find_video(url, path):
@@ -66,29 +69,34 @@ def find_video(url, path):
     dict_youtube = {'subject':title_list,'thumbnail':thumbnail_list, 'url':url_list, 'running_time':video_time_list}
 
     youtube = pd.DataFrame(dict_youtube)
-    youtube.to_csv(path + '/' + base_url.split('/')[-2] +'.csv', encoding='', index=False)
+    path = path + '/' + base_url.split('/')[-2] +'.csv'
+    youtube.to_csv(path, encoding='', index=False)
     driver.close()
+    csv_db_connection(url, path)
 
 
-def csv_db_connection(path, url):
+def csv_db_connection(url, filename):
     '''
-    path : 파일 전체 이름이 포함된 path를 기준으로 데이터를 DB와 연동합니다.
-    url : DB의 키값이 되어줄 URL입니다.(채널값)
+    url : DB의 키값이 되어줄 URL입니다.(채널값) 예시 : 'https://www.youtube.com/channel/UCyn-K7rZLXjGl7VXGweIlcA'
+    filename : 파일 전체 이름이 포함된 csv파일을 기준으로 데이터를 DB와 연동합니다. 예시 : './media/csv/ebsdocumentary.csv'
     '''
-    f = open('./media/csv/ebsdocumentary.csv', 'r')
+    f = open(filename, 'r')
     info = []
     rdr = csv.reader(f)
-    tracking_url = TrackingUrl.objects.get(url='https://www.youtube.com/channel/UCyn-K7rZLXjGl7VXGweIlcA')
+    tracking_url = TrackingUrl.objects.get(url=url)
     for i, row in enumerate(rdr):
         if i == 0:
             continue
         subject, thumbnail, url, running_time = row
-        local = " "
+        local = download_video(url, './media/' + filename.split('/')[-1][:-4])
         db = LocalUrl(tracking_url=tracking_url, subject=subject, thumbnail=thumbnail, local=local, url=url, running_time=running_time)
+        print("처리중 : ", subject)
         db.save()
 
 
-find_video('https://www.youtube.com/user/ebsdocumentary', './media/csv')
 
-
-# 코드 출처 https://m.blog.naver.com/tamiblue/221723206818
+if __name__ == '__main__':
+    tracking_url = TrackingUrl.objects.all()
+    for url in tracking_url:
+        print("작업중인 url : ", url.url)
+        find_video(url.url, './media/csv')
