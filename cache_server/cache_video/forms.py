@@ -6,9 +6,16 @@ class UploadForm(forms.ModelForm):
     class Meta:
         model = UploadedFile
         fields = ['subject', 'local']
-
+        labels = {
+            'subject': '제목',
+            'local': '파일'
+        }
 
 class RegisterUrlForm(forms.ModelForm):
     class Meta:
         model = TrackingUrl
-        fields = ['url', 'subject']
+        fields = ['subject', 'url']
+        labels = {
+            'subject': '제목',
+            'url': 'url'
+        }
