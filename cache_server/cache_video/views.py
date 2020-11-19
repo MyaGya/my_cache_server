@@ -24,14 +24,14 @@ def main(request):
     page = request.GET.get('page', '1')  # 페이지
 
     # 조회
-    video_list = TrackingUrl.objects.all()
+    main = TrackingUrl.objects.all()
 
     # 페이징처리
-    paginator = Paginator(video_list, 10)  # 페이지당 10개씩 보여주기
+    paginator = Paginator(main, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
 
-    context = {'video_list': page_obj}
-    return render(request, 'cache_video/video_list.html', context)
+    context = {'main': page_obj}
+    return render(request, 'cache_video/main.html', context)
 
 
 def upload(request):
@@ -52,15 +52,15 @@ def upload(request):
     return render(request, 'cache_video/upload.html', context)
 
 
-def my_video(request):
-    return render(request, 'cache_video/my_video.html', {'user': request.user})
+def upload_check(request):
+    return render(request, 'cache_video/upload_check.html', {'user': request.user})
 
 
-def detail(request, tracking_url_id:int):
+def main_detail(request, tracking_url_id:int):
     Obj = get_object_or_404(TrackingUrl, pk=tracking_url_id)
     Obj = Obj.localurl_set.all()
     print(Obj)
-    return render(request, 'cache_video/detail.html', {'video_list': Obj})
+    return render(request, 'cache_video/main_detail.html', {'main': Obj})
 
 
 def video_delete(request, uploadedfile_id):
@@ -71,7 +71,7 @@ def video_delete(request, uploadedfile_id):
     data.delete()
 
     # os.remove(os.path.join(settings.MEDIA_ROOT, str(data.local)))
-    return redirect('cache_video:my_video')
+    return redirect('cache_video:upload_check')
 
 
 def url_delete(request, urltracking_id):
@@ -81,9 +81,9 @@ def url_delete(request, urltracking_id):
     data = get_object_or_404(TrackingUrl, pk=urltracking_id)
     data.delete()
 
-    return redirect('cache_video:register_url')
+    return redirect('cache_video:add_url')
 
-def register_url(request):
+def add_url(request):
     '''
     트래킹 URL을 등록합니다.
     '''
@@ -93,8 +93,8 @@ def register_url(request):
             my_form = form.save(commit=False)
             my_form.user = request.user
             my_form.save()
-            return redirect('cache_video:register_url')
+            return redirect('cache_video:add_url')
     else:
         form = RegisterUrlForm()
     context = {'form': form, 'user': request.user}
-    return render(request, 'cache_video/register_url.html', context)
+    return render(request, 'cache_video/add_url.html', context)

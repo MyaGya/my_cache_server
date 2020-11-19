@@ -6,12 +6,12 @@ urlpatterns = [
     path('', views.go_main, name='go_main'),  # 메인 페이지
     path('main/', views.main, name='main'),  # 메인 페이지
     path('upload/', views.upload, name='upload'),  # 업로드 페이지
-    path('my_video/', views.my_video, name='my_video'),  # 내 비디오
-    path('my_video/video_delete/<int:uploadedfile_id>', views.video_delete, name='video_delete'),  # 비디오 삭제
-    path('my_video/url_delete/<int:urltracking_id>', views.url_delete, name='url_delete'),  # url 삭제
-    path('my_video/register_url', views.register_url, name='register_url'),  # url 등록
-    path('detail/<int:tracking_url_id>', views.detail, name='detail')  # 메인 페이지의 상세보기
+    path('upload_check/', views.upload_check, name='upload_check'),  # 내 비디오
+    path('upload_check/video_delete/<int:uploadedfile_id>', views.video_delete, name='video_delete'),  # 비디오 삭제
+    path('upload_check/url_delete/<int:urltracking_id>', views.url_delete, name='url_delete'),  # url 삭제
+    path('upload_check/add_url', views.add_url, name='add_url'),  # url 등록
+    path('main_detail/<int:tracking_url_id>', views.main_detail, name='main_detail')  # 메인 페이지의 상세보기
 
-    # path('<int:question_id>/', views.detail, name='detail'),                              # 상세보기 페이지
+    # path('<int:question_id>/', views.main_detail, name='main_detail'),                              # 상세보기 페이지
     # path('answer/create/', views.question_create, name='question_create'),                # 질문 생성 페이지
 ]

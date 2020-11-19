@@ -12,12 +12,12 @@
         </tr>
         </thead>
         <tbody>
-        {% if video_list %}
-        {% for video in video_list %}
+        {% if main %}
+        {% for video in main %}
         <tr>
             <td>{{ forloop.counter }}</td>
             <td>
-                <a href="{% url 'cache_video:detail' video.id %}">{{ video.subject }}</a>
+                <a href="{% url 'cache_video:main_detail' video.id %}">{{ video.subject }}</a>
             </td>
         </tr>
         {% endfor %}
@@ -30,9 +30,9 @@
     </table>
         <ul class="pagination justify-content-center">
         <!-- 이전페이지 -->
-        {% if video_list.has_previous %}
+        {% if main.has_previous %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ video_list.previous_page_number }}">이전</a>
+            <a class="page-link" href="?page={{ main.previous_page_number }}">이전</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -40,9 +40,9 @@
         </li>
         {% endif %}
         <!-- 페이지리스트 -->
-        {% for page_number in video_list.paginator.page_range %}
-            {% if page_number >= video_list.number|add:-5 and page_number <= video_list.number|add:5 %}
-            {% if page_number == video_list.number %}
+        {% for page_number in main.paginator.page_range %}
+            {% if page_number >= main.number|add:-5 and page_number <= main.number|add:5 %}
+            {% if page_number == main.number %}
             <li class="page-item active" aria-current="page">
                 <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
             </li>
@@ -54,9 +54,9 @@
             {% endif %}
         {% endfor %}
         <!-- 다음페이지 -->
-        {% if video_list.has_next %}
+        {% if main.has_next %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ video_list.next_page_number }}">다음</a>
+            <a class="page-link" href="?page={{ main.next_page_number }}">다음</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -68,7 +68,7 @@
     <!-- 페이징처리 끝 -->
 
 
-        <a href="{% url 'cache_video:register_url' %}" class="btn btn-primary">URL 추가하기</a>
+        <a href="{% url 'cache_video:add_url' %}" class="btn btn-primary">URL 추가하기</a>
 
 </div>
 

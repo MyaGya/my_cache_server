@@ -6,8 +6,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
 <div class="container my-3">
     <h2 class="border-bottom py-2">{{ user }}</h2>
-    <h5 class="border-bottom my-3 py-2">{{video_list.count}}개의 동영상이 있습니다.</h5>
-    {% for video in video_list %}
+    <h5 class="border-bottom my-3 py-2">{{main.count}}개의 동영상이 있습니다.</h5>
+    {% for video in main %}
     <div class="card my-3">
         <div class="card-body">
             <h2 class="border-bottom py-2">{{ video.subject }}</h2>
