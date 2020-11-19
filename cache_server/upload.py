@@ -16,15 +16,18 @@ def download_video(url, path):
     완성된 URL을 받아(실제 동영상 실행 페이지) 동영상을 path에 1080p으로 다운로드합니다.
     'https://www.youtube.com/watch?v=riI4FGbKN9k'
     '''
-    data = YouTube(url).streams
-    '''
-    1080p 기능 임시 비활성화
-    for s in data:
-        if s.resolution == "1080p":
-            return s.download(path)
-    return data[0].download(path)
-    '''
-    return data.first().download(path)
+    try:
+        data = YouTube(url).streams
+        '''
+        1080p 기능 임시 비활성화
+        for s in data:
+            if s.resolution == "1080p":
+                return s.download(path)
+        return data[0].download(path)
+        '''
+        return data.first().download(path)
+    except:
+        return "ERROR"
 
 
 def find_video(url, path):
