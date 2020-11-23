@@ -2,6 +2,7 @@
 {% block content %}
 
 {% load static %}
+
 <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
 <div class="container my-3">
     <table class="table">
@@ -12,6 +13,7 @@
         </tr>
         </thead>
         <tbody>
+        {% if user.is_authenticated %}
         {% if main %}
         {% for video in main %}
         <tr>
@@ -66,10 +68,11 @@
 
     </ul>
     <!-- 페이징처리 끝 -->
-
-
         <a href="{% url 'cache_video:add_url' %}" class="btn btn-primary">URL 추가하기</a>
+{% else %}
 
 </div>
 
+
+{% endif %}
 {% endblock %}
