@@ -47,7 +47,7 @@ def find_video(url, path):
     video_time_list = []
     url_list = []
     thumbnail_list = []
-    for video in all_videos[:10]:
+    for video in all_videos[:3]:
         # 제목
         title = video.find(id='video-title')
         if len(title.text.strip())>0:

@@ -26,7 +26,8 @@ class LocalUrl(models.Model):
     local = models.CharField(max_length=100, blank=True)                     # 다운하고자 하는 파일의 local 위치
     thumbnail = models.CharField(max_length=100, blank=True)                 # 썸네일 파일의 local 위치
     running_time = models.CharField(max_length=100)                      # 동영상 길이
-
+    def __str__(self):
+        return self.subject
 
 class UploadedFile(models.Model):
     '''

@@ -24,7 +24,7 @@ def main(request):
     page = request.GET.get('page', '1')  # 페이지
 
     # 조회
-    main = TrackingUrl.objects.filter(id = request.user.id)
+    main = TrackingUrl.objects.filter(user_id=request.user.id)
 
     # 페이징처리
     paginator = Paginator(main, 10)  # 페이지당 10개씩 보여주기
